@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="glshell.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefabs.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicSceneRenderer.cpp" />
+    <ClCompile Include="Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="glshell.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefabs.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="BasicSceneRenderer.h" />
+    <ClInclude Include="Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{106868b1-d44f-41a9-9301-ad7164b5f6fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{e9ffb83b-d0e0-4da6-9660-b78357fdaf5c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\vcolor-fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vpc-vs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\BlinnPhongPerFragmentDirLight-fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\BlinnPhongPerFragmentMultiLight-fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\BlinnPhongPerFragmentPointLight-fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\PerVertexDirLight-fs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\PerVertexDirLight-vs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\BlinnPhongPerFragment-vs.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
