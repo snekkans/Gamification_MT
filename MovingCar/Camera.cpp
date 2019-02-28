@@ -47,71 +47,79 @@ void Camera::pitch(float degrees)
 
 void Camera::update(float deltaT)
 {
-    const Keyboard* kb = mApp->getKeyboard();
-    const Mouse* mouse = mApp->getMouse();
+	const Keyboard* kb = mApp->getKeyboard();
+	const Mouse* mouse = mApp->getMouse();
 
-    bool orientationChanged = false;
+	bool orientationChanged = false;
 
-    // the right mouse button needs to be pressed for freelook to work
-    //if (mouse->isButtonDown(MOUSE_BUTTON_RIGHT)) {
-    if (mouse->isButtonDown(MOUSE_BUTTON_LEFT)) {
-        int dx = mouse->getDeltaX();
-        int dy = mouse->getDeltaY();
+	// the right mouse button needs to be pressed for freelook to work
+	//if (mouse->isButtonDown(MOUSE_BUTTON_RIGHT)) {
+	if (mouse->isButtonDown(MOUSE_BUTTON_LEFT)) {
+		int dx = mouse->getDeltaX();
+		int dy = mouse->getDeltaY();
 
-        if (dx != 0)
-            yaw(-dx * mMouseSpeed);
+		if (dx != 0)
+			yaw(-dx * mMouseSpeed);
 
-        if (dy != 0)
-            pitch(-dy * mMouseSpeed);
-    }
+		if (dy != 0)
+			pitch(-dy * mMouseSpeed);
+	}
 
-    // scroll wheel controls FOV
-    int wd = mouse->getWheelDelta();
-    if (wd > 0) {
-        mFOV -= wd * 10.0f;
-        if (mFOV < 20)
-            mFOV = 20;
-    } else if (wd < 0) {
-        mFOV += wd * 10.0f;
-        if (mFOV > 180)
-            mFOV = 180;
-    }
+	// scroll wheel controls FOV
+	int wd = mouse->getWheelDelta();
+	if (wd > 0) {
+		mFOV -= wd * 10.0f;
+		if (mFOV < 20)
+			mFOV = 20;
+	}
+	else if (wd < 0) {
+		mFOV += wd * 10.0f;
+		if (mFOV > 180)
+			mFOV = 180;
+	}
 
-    // recompute forward, right, and up vectors if needed
-    if (mOrientationChanged) {
-        // sin and cos functions eat radians, not degrees
-        float radYaw = (3.14159265f / 180.0f) * mYaw;
-        float radPitch = (3.14159265f / 180.0f) * mPitch;
+	// recompute forward, right, and up vectors if needed
+	if (mOrientationChanged) {
+		// sin and cos functions eat radians, not degrees
+		float radYaw = (3.14159265f / 180.0f) * mYaw;
+		float radPitch = (3.14159265f / 180.0f) * mPitch;
 
-        // some angle measures needed to compute the orientation vectors
-        float sinYaw = std::sin(radYaw);
-        float cosYaw = std::cos(radYaw);
-        float sinPitch = std::sin(radPitch);
-        float cosPitch = std::cos(radPitch);
+		// some angle measures needed to compute the orientation vectors
+		float sinYaw = std::sin(radYaw);
+		float cosYaw = std::cos(radYaw);
+		float sinPitch = std::sin(radPitch);
+		float cosPitch = std::cos(radPitch);
 
-	    mForward.x = -sinYaw * cosPitch;
-        mForward.y = sinPitch;
-	    mForward.z = -cosYaw * cosPitch;
-        mForward = glm::normalize(mForward);
+		mForward.x = -sinYaw * cosPitch;
+		mForward.y = sinPitch;
+		mForward.z = -cosYaw * cosPitch;
+		mForward = glm::normalize(mForward);
 
-	    mRight.x = cosYaw;
-        mRight.y = 0;
-	    mRight.z = -sinYaw;
-        mRight = glm::normalize(mRight);
+		mRight.x = cosYaw;
+		mRight.y = 0;
+		mRight.z = -sinYaw;
+		mRight = glm::normalize(mRight);
 
-        // the Up vector is the cross product of the Right and Forward vectors
-        mUp = glm::cross(mRight, mForward);
-        mUp = glm::normalize(mUp);
+		// the Up vector is the cross product of the Right and Forward vectors
+		mUp = glm::cross(mRight, mForward);
+		mUp = glm::normalize(mUp);
 
-        mOrientationChanged = false;
-    }
+		mOrientationChanged = false;
+	}
 
-    // move vector determined from key states
-    glm::vec3 localMoveVec(0.0f, 0.0f, 0.0f);
+	// move vector determined from key states
+	glm::vec3 localMoveVec(0.0f, 0.0f, 0.0f);
 
-    // move forward and back
-    if (kb->isKeyDown(KC_Z))
-        localMoveVec.z += 1;
+	// move forward and back
+	if (kb->isKeyDown(KC_Z))
+		//if (kb->isKeyDown(KC_LEFT)){
+		//	localMoveVec.x -= 1;
+		//	localMoveVec.z += 1;
+		//}
+		//else
+		//{
+			localMoveVec.z += 1;
+		//}
     if (kb->isKeyDown(KC_X))
         localMoveVec.z -= 1;
 
