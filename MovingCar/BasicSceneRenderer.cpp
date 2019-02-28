@@ -130,7 +130,7 @@ void BasicSceneRenderer::initialize()
     float spacing = 3;
     float z = 0.5f * spacing * numRows;
 	//create the cube
-	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, 0.0f, z)));
+	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 0)));
 	z -= spacing;
 	/*
 	for (unsigned i = 2; i < mMaterials.size(); i++) {
@@ -167,9 +167,9 @@ void BasicSceneRenderer::initialize()
     //
 
     mCamera = new Camera(this);
-    mCamera->setPosition(0, 8, 22);
-    mCamera->lookAt(0, 0, 0);
-    mCamera->setSpeed(2);
+    mCamera->setPosition(0, -8, 16);
+    mCamera->lookAt(0, -8, 0);
+    mCamera->setSpeed(6);
 
     // create shader program for debug geometry
     mDbgProgram = new ShaderProgram("shaders/vpc-vs.glsl",
@@ -419,7 +419,8 @@ void BasicSceneRenderer::draw()
     Entity* activeEntity = mEntities[mActiveEntityIndex];
     mDbgProgram->sendUniform("u_ModelviewMatrix", viewMatrix * activeEntity->getWorldMatrix());
     mAxes->activate();
-    mAxes->draw();
+    //comment out the line below to get rid of axes
+	mAxes->draw();
 
     CHECK_GL_ERRORS("drawing");
 }
@@ -456,7 +457,6 @@ bool BasicSceneRenderer::update(float dt)
 	//movement controls for the car, forward, backward, left, right
     if (kb->isKeyDown(KC_LEFT))
         activeEntity->rotate(rotAmount, 0, 1, 0);
-		
     if (kb->isKeyDown(KC_RIGHT))
         activeEntity->rotate(-rotAmount, 0, 1, 0);
 	if (kb->isKeyDown(KC_Z))

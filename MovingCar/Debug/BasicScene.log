@@ -1,4 +1,4 @@
 ﻿  BasicSceneRenderer.cpp
-c:\users\shadefoundry\onedrive\school\gamification\examples\basicscenerendererwithmaterials_inclass\basicscenerenderer.cpp(463): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\onedrive\school\gamification\examples\basicscenerendererwithmaterials_inclass\basicscenerenderer.cpp(465): warning C4305: 'argument': truncation from 'double' to 'float'
-  BasicScene.vcxproj -> C:\Users\ShadeFoundry\OneDrive\School\Gamification\Examples\BasicSceneRendererWithMaterials_InClass\Debug\BasicScene.exe
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(463): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(465): warning C4305: 'argument': truncation from 'double' to 'float'
+  BasicScene.vcxproj -> C:\Users\ShadeFoundry\Desktop\Gamification_MT\MovingCar\Debug\BasicScene.exe

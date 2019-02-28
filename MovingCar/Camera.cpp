@@ -110,9 +110,9 @@ void Camera::update(float deltaT)
     glm::vec3 localMoveVec(0.0f, 0.0f, 0.0f);
 
     // move forward and back
-    if (kb->isKeyDown(KC_W))
+    if (kb->isKeyDown(KC_Z))
         localMoveVec.z += 1;
-    if (kb->isKeyDown(KC_S))
+    if (kb->isKeyDown(KC_X))
         localMoveVec.z -= 1;
 
     // move left and right
