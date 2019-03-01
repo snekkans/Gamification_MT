@@ -456,9 +456,11 @@ bool BasicSceneRenderer::update(float dt)
     float rotAmount = rotSpeed * dt;
 	//movement controls for the car, forward, backward, left, right
     if (kb->isKeyDown(KC_LEFT))
-        activeEntity->rotate(rotAmount, 0, 1, 0);
+        //activeEntity->rotate(rotAmount, 0, 1, 0);
+		activeEntity->translateLocal(-0.1, 0, 0);
     if (kb->isKeyDown(KC_RIGHT))
-        activeEntity->rotate(-rotAmount, 0, 1, 0);
+        //activeEntity->rotate(-rotAmount, 0, 1, 0);
+		activeEntity->translateLocal(0.1, 0, 0);
 	if (kb->isKeyDown(KC_Z))
 		activeEntity->translateLocal(0,0,-0.1);
 	if (kb->isKeyDown(KC_X))
