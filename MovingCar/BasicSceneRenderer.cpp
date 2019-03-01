@@ -58,9 +58,9 @@ void BasicSceneRenderer::initialize()
     mMeshes.push_back(CreateChunkyTexturedCylinder(0.5f, 1, 8));
     mMeshes.push_back(CreateSmoothTexturedCylinder(0.5f, 1, 15));
 
-    float roomWidth = 32;
+    float roomWidth = 12;
     float roomHeight = 24;
-    float roomDepth = 52;
+    float roomDepth = 64;
     float roomTilesPerUnit = 0.25f;
 
     // front and back walls
@@ -129,8 +129,9 @@ void BasicSceneRenderer::initialize()
     unsigned numRows = mMaterials.size();
     float spacing = 3;
     float z = 0.5f * spacing * numRows;
-	//create the cube
+	//create the car
 	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 0)));
+	mEntities.push_back(new Entity(mMeshes[1], mMaterials[2], Transform(2.0f, -11.5f, -5)));
 	z -= spacing;
 	/*
 	for (unsigned i = 2; i < mMaterials.size(); i++) {
@@ -160,7 +161,7 @@ void BasicSceneRenderer::initialize()
     // floor
     mEntities.push_back(new Entity(cfMesh, mMaterials[0], Transform(0, -0.5f * roomHeight, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
     // ceiling
-    mEntities.push_back(new Entity(cfMesh, mMaterials[0], Transform(0, 0.5f * roomHeight, 0, glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
+    //mEntities.push_back(new Entity(cfMesh, mMaterials[0], Transform(0, 0.5f * roomHeight, 0, glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
 
     //
     // create the camera
@@ -427,44 +428,58 @@ void BasicSceneRenderer::draw()
 
 bool BasicSceneRenderer::update(float dt)
 {
-    const Keyboard* kb = getKeyboard();
+	const Keyboard* kb = getKeyboard();
 
-    if (kb->keyPressed(KC_ESCAPE))
-        return false;
+	if (kb->keyPressed(KC_ESCAPE))
+		return false;
 
-    // move forward through our list of entities
-    /*if (kb->keyPressed(KC_X)) {
-        // compute next entity index
-        ++mActiveEntityIndex;
-        if (mActiveEntityIndex >= (int)mEntities.size())
-            mActiveEntityIndex = 0;
-    }
+	// move forward through our list of entities
+	/*if (kb->keyPressed(KC_Q)) {
+		// compute next entity index
+		++mActiveEntityIndex;
+		if (mActiveEntityIndex >= (int)mEntities.size())
+			mActiveEntityIndex = 0;
+	}
 
-    // move backward through our list of entities
-    if (kb->keyPressed(KC_Z)) {
-        // compute previous entity index
-        --mActiveEntityIndex;
-        if (mActiveEntityIndex < 0)
-            mActiveEntityIndex = (int)mEntities.size() - 1;
-    }*/
+	// move backward through our list of entities
+	if (kb->keyPressed(KC_Z)) {
+		// compute previous entity index
+		--mActiveEntityIndex;
+		if (mActiveEntityIndex < 0)
+			mActiveEntityIndex = (int)mEntities.size() - 1;
+	}*/
 
-    // get the entity to manipulate
-    Entity* activeEntity = mEntities[mActiveEntityIndex];
+	// get the entity to manipulate
+	Entity* activeEntity = mEntities[mActiveEntityIndex];
+	//player is the first thing we render so it's mEntities 0
+	Entity* playerVehicle = mEntities[0];
+	//test obstacle
+	Entity* obstacle = mEntities[1];
+	//position of the car, can use carPos.x, etc. for coordinates
+	glm::vec3 carPos = playerVehicle->getPosition();
+	//position of test obstacle
+	glm::vec3 obsPos = obstacle->getPosition();
 
-    // rotate the entity
-    float rotSpeed = 90;
-    float rotAmount = rotSpeed * dt;
+	// rotate the entity
+	float rotSpeed = 90;
+	float rotAmount = rotSpeed * dt;
 	//movement controls for the car, forward, backward, left, right
-    if (kb->isKeyDown(KC_LEFT))
-        //activeEntity->rotate(rotAmount, 0, 1, 0);
-		activeEntity->translateLocal(-0.1, 0, 0);
-    if (kb->isKeyDown(KC_RIGHT))
-        //activeEntity->rotate(-rotAmount, 0, 1, 0);
-		activeEntity->translateLocal(0.1, 0, 0);
-	if (kb->isKeyDown(KC_Z))
-		activeEntity->translateLocal(0,0,-0.1);
-	if (kb->isKeyDown(KC_X))
-		activeEntity->translateLocal(0, 0, 0.1);
+	if (kb->isKeyDown(KC_LEFT)) {
+		//activeEntity->rotate(rotAmount, 0, 1, 0);
+		playerVehicle->translateLocal(-0.1, 0, 0);
+		
+	}
+	if (kb->isKeyDown(KC_RIGHT)) {
+		//activeEntity->rotate(-rotAmount, 0, 1, 0);
+		playerVehicle->translateLocal(0.1, 0, 0);
+	}
+	if (kb->isKeyDown(KC_Z)) {
+		playerVehicle->translateLocal(0, 0, -0.1);
+	}
+	if (kb->isKeyDown(KC_X)) {
+		playerVehicle->translateLocal(0, 0, 0.1);
+	}
+
     /*if (kb->isKeyDown(KC_UP))
         activeEntity->rotate(rotAmount, 1, 0, 0);
     if (kb->isKeyDown(KC_DOWN))

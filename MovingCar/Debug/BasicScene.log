@@ -1,9 +1,6 @@
 ﻿  BasicSceneRenderer.cpp
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(460): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(463): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(465): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(467): warning C4305: 'argument': truncation from 'double' to 'float'
-  Camera.cpp
-  Generating Code...
-  LINK : C:\Users\ShadeFoundry\Desktop\Gamification_MT\MovingCar\Debug\BasicScene.exe not found or not built by the last incremental link; performing full link
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(472): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(475): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(478): warning C4305: 'argument': truncation from 'double' to 'float'
   BasicScene.vcxproj -> C:\Users\ShadeFoundry\Desktop\Gamification_MT\MovingCar\Debug\BasicScene.exe
