@@ -69,9 +69,9 @@ void BasicSceneRenderer::initialize()
     //
     // Create meshes
     //
-
+	//TODO: Mesh Creation starts here
     mMeshes.push_back(CreateTexturedCube(1));
-    mMeshes.push_back(CreateChunkyTexturedCylinder(0.5f, 1, 8));
+    mMeshes.push_back(CreateChunkyTexturedCylinder(1.5f, 1, 8));
     mMeshes.push_back(CreateSmoothTexturedCylinder(0.5f, 1, 15));
 
     float roomWidth = 12;
@@ -145,10 +145,11 @@ void BasicSceneRenderer::initialize()
     unsigned numRows = mMaterials.size();
     float spacing = 3;
     float z = 0.5f * spacing * numRows;
-	//create the car
-	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 0)));
-	//create obstacle
-	mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(2.0f, -11.5f, -5)));
+	//TODO: Car and Obstacles created here
+	//car
+	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 30)));
+	//test obstacle
+	mEntities.push_back(new Entity(mMeshes[1], mMaterials[2], Transform(2.0f, -11.5f, -5)));
 	z -= spacing;
 	/*
 	for (unsigned i = 2; i < mMaterials.size(); i++) {
@@ -185,7 +186,7 @@ void BasicSceneRenderer::initialize()
     //
 
     mCamera = new Camera(this);
-    mCamera->setPosition(0, -8, 16);
+    mCamera->setPosition(0, -8, 40);
     mCamera->lookAt(0, -8, 0);
     mCamera->setSpeed(6);
 
@@ -280,7 +281,7 @@ void BasicSceneRenderer::draw()
         // send light color/intensity
         prog->sendUniform("u_LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
-    } else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT) {
+    } /*else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT) {
 
         //----------------------------------------------------------------------------------//
         //                                                                                  //
@@ -334,7 +335,7 @@ void BasicSceneRenderer::draw()
             lightMesh->draw();
         }
 
-    } else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_MULTI_LIGHT) {
+    }*/ /*else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_MULTI_LIGHT) {
 
         //----------------------------------------------------------------------------------//
         //                                                                                  //
@@ -395,7 +396,7 @@ void BasicSceneRenderer::draw()
             prog->sendUniform("u_ModelviewMatrix", glm::translate(viewMatrix, glm::vec3(lightPos3)));
             lightMesh->draw();
         }
-    }
+    }*/
 
     // render all entities
     for (unsigned i = 0; i < mEntities.size(); i++) {
@@ -445,6 +446,7 @@ void BasicSceneRenderer::draw()
 
 bool BasicSceneRenderer::update(float dt)
 {
+	//TODO: Update starts here
 	const Keyboard* kb = getKeyboard();
 
 	if (kb->keyPressed(KC_ESCAPE))
@@ -476,6 +478,8 @@ bool BasicSceneRenderer::update(float dt)
 	glm::vec3 carPos = playerVehicle->getPosition();
 	//position of test obstacle
 	glm::vec3 obsPos = obstacle->getPosition();
+	//camera position vector
+	glm::vec3 cameraPosition = mCamera->getPosition();
 
 	// rotate the entity
 	float rotSpeed = 90;
@@ -499,16 +503,18 @@ bool BasicSceneRenderer::update(float dt)
 		then if distance is less than 1
 		*/
 		//activeEntity->rotate(rotAmount, 0, 1, 0);
-		if (d < 1) {
+		if (d < 2) {
 			d += 0.1;
 			std::cout << d << std::endl;
 			playerVehicle->translateLocal(0.15, 0, 0);
 		}
-		else{ playerVehicle->translateLocal(-0.1, 0, 0); }
+		else{ 
+			playerVehicle->translateLocal(-0.1, 0, 0);
+		}
 	}
 	if (kb->isKeyDown(KC_RIGHT)) {
 		//activeEntity->rotate(-rotAmount, 0, 1, 0);
-		if (d<1) { 
+		if (d<2) { 
 			d += 0.1;
 			std::cout << d << std::endl;
 			playerVehicle->translateLocal(-0.15, 0, 0);
@@ -517,21 +523,29 @@ bool BasicSceneRenderer::update(float dt)
 		
 	}
 	if (kb->isKeyDown(KC_Z) || kb->isKeyDown(KC_UP)) {
-		if (d < 1) { 
+		if (d < 2) { 
 			d += 0.1;
 			std::cout << d << std::endl;
-			playerVehicle->translateLocal(0, 0, 0.15);
+			//playerVehicle->translateLocal(0, 0, 0.1);
+			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 		}
-		else { playerVehicle->translateLocal(0, 0, -0.1); }
+		else { 
+			playerVehicle->translateLocal(0, 0, -0.2); 
+			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.2);
+		}
 		
 	}
 	if (kb->isKeyDown(KC_X)|| kb->isKeyDown(KC_DOWN)) {
-		if (d < 1) { 
+		if (d < 2) { 
 			d += 0.1;
 			std::cout << d << std::endl; 
-			playerVehicle->translateLocal(0, 0, -0.15);
+			//playerVehicle->translateLocal(0, 0, -0.1);
+			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 		}
-		else { playerVehicle->translateLocal(0, 0, 0.1); }
+		else { 
+			playerVehicle->translateLocal(0, 0, 0.2); 
+			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.2);
+		}
 		
 	}
 

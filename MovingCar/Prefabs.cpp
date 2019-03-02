@@ -361,7 +361,6 @@ Mesh* CreateChunkyCone(float radius, float height, int numSegments)
     return mesh;
 }
 
-
 Mesh* CreateTexturedCube(float width)
 {
     std::vector<VertexPNT> vertices;

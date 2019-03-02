@@ -52,9 +52,11 @@ void Camera::update(float deltaT)
 
 	bool orientationChanged = false;
 
+	//TODO: Built In camera controls start here
+
 	// the right mouse button needs to be pressed for freelook to work
 	//if (mouse->isButtonDown(MOUSE_BUTTON_RIGHT)) {
-	if (mouse->isButtonDown(MOUSE_BUTTON_LEFT)) {
+	/*if (mouse->isButtonDown(MOUSE_BUTTON_LEFT)) {
 		int dx = mouse->getDeltaX();
 		int dy = mouse->getDeltaY();
 
@@ -63,10 +65,10 @@ void Camera::update(float deltaT)
 
 		if (dy != 0)
 			pitch(-dy * mMouseSpeed);
-	}
+	}*/
 
 	// scroll wheel controls FOV
-	int wd = mouse->getWheelDelta();
+	/*int wd = mouse->getWheelDelta();
 	if (wd > 0) {
 		mFOV -= wd * 10.0f;
 		if (mFOV < 20)
@@ -76,7 +78,7 @@ void Camera::update(float deltaT)
 		mFOV += wd * 10.0f;
 		if (mFOV > 180)
 			mFOV = 180;
-	}
+	}*/
 
 	// recompute forward, right, and up vectors if needed
 	if (mOrientationChanged) {
@@ -111,17 +113,17 @@ void Camera::update(float deltaT)
 	glm::vec3 localMoveVec(0.0f, 0.0f, 0.0f);
 
 	// move forward and back
-	if (kb->isKeyDown(KC_Z))
+	if (kb->isKeyDown(KC_W))
 		//if (kb->isKeyDown(KC_LEFT)){
 		//	localMoveVec.x -= 1;
 		//	localMoveVec.z += 1;
 		//}
 		//else
 		//{
-			//localMoveVec.z += 1;
+			localMoveVec.z += 1;
 		//}
-    if (kb->isKeyDown(KC_X))
-        //localMoveVec.z -= 1;
+    if (kb->isKeyDown(KC_S))
+        localMoveVec.z -= 1;
 
     // move left and right
     if (kb->isKeyDown(KC_A))
