@@ -118,10 +118,10 @@ void Camera::update(float deltaT)
 		//}
 		//else
 		//{
-			localMoveVec.z += 1;
+			//localMoveVec.z += 1;
 		//}
     if (kb->isKeyDown(KC_X))
-        localMoveVec.z -= 1;
+        //localMoveVec.z -= 1;
 
     // move left and right
     if (kb->isKeyDown(KC_A))

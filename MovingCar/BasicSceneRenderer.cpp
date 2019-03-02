@@ -1,8 +1,19 @@
 #include "BasicSceneRenderer.h"
 #include "Image.h"
 #include "Prefabs.h"
-
+#include <GL/glut.h>
 #include <iostream>
+
+GLfloat d;
+GLfloat p1x;
+GLfloat p1y;
+GLfloat p1z;
+const int p1radius = 1;
+const int p2radius = 0;
+
+GLfloat p2x;
+GLfloat p2y;
+GLfloat p2z;
 
 BasicSceneRenderer::BasicSceneRenderer()
     : mLightingModel(PER_VERTEX_DIR_LIGHT)
@@ -12,7 +23,12 @@ BasicSceneRenderer::BasicSceneRenderer()
     , mDbgProgram(NULL)
     , mAxes(NULL)
     , mVisualizePointLights(true)
-{
+{}
+
+void calculateDistance() {
+	//set the distance to the current distance between car and obstacle
+	//TODO: update for collision with more than one entity
+	d = sqrt(((p1x - p2x) * (p1x - p2x)) + ((p1y - p2y) * (p1y - p2y)) + ((p1z - p2z) * (p1z - p2z)));
 }
 
 void BasicSceneRenderer::initialize()
@@ -131,7 +147,8 @@ void BasicSceneRenderer::initialize()
     float z = 0.5f * spacing * numRows;
 	//create the car
 	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 0)));
-	mEntities.push_back(new Entity(mMeshes[1], mMaterials[2], Transform(2.0f, -11.5f, -5)));
+	//create obstacle
+	mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(2.0f, -11.5f, -5)));
 	z -= spacing;
 	/*
 	for (unsigned i = 2; i < mMaterials.size(); i++) {
@@ -159,7 +176,7 @@ void BasicSceneRenderer::initialize()
     // right wall
     mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(0.5f * roomWidth, 0, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));*/
     // floor
-    mEntities.push_back(new Entity(cfMesh, mMaterials[0], Transform(0, -0.5f * roomHeight, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
+    mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
     // ceiling
     //mEntities.push_back(new Entity(cfMesh, mMaterials[0], Transform(0, 0.5f * roomHeight, 0, glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
 
@@ -463,21 +480,59 @@ bool BasicSceneRenderer::update(float dt)
 	// rotate the entity
 	float rotSpeed = 90;
 	float rotAmount = rotSpeed * dt;
+
+	p1x = carPos.x;
+	p1y = carPos.y;
+	p1z = carPos.z;
+	p2x = obsPos.x;
+	p2y = obsPos.y;
+	p2z = obsPos.z;
+	
+	calculateDistance();
+	
 	//movement controls for the car, forward, backward, left, right
+	//if key's pressed
 	if (kb->isKeyDown(KC_LEFT)) {
+		/*
+		recalculate distance
+		add 0.1 to distance
+		then if distance is less than 1
+		*/
 		//activeEntity->rotate(rotAmount, 0, 1, 0);
-		playerVehicle->translateLocal(-0.1, 0, 0);
-		
+		if (d < 1) {
+			d += 0.1;
+			std::cout << d << std::endl;
+			playerVehicle->translateLocal(0.15, 0, 0);
+		}
+		else{ playerVehicle->translateLocal(-0.1, 0, 0); }
 	}
 	if (kb->isKeyDown(KC_RIGHT)) {
 		//activeEntity->rotate(-rotAmount, 0, 1, 0);
-		playerVehicle->translateLocal(0.1, 0, 0);
+		if (d<1) { 
+			d += 0.1;
+			std::cout << d << std::endl;
+			playerVehicle->translateLocal(-0.15, 0, 0);
+		}
+		else { playerVehicle->translateLocal(0.1, 0, 0); }
+		
 	}
-	if (kb->isKeyDown(KC_Z)) {
-		playerVehicle->translateLocal(0, 0, -0.1);
+	if (kb->isKeyDown(KC_Z) || kb->isKeyDown(KC_UP)) {
+		if (d < 1) { 
+			d += 0.1;
+			std::cout << d << std::endl;
+			playerVehicle->translateLocal(0, 0, 0.15);
+		}
+		else { playerVehicle->translateLocal(0, 0, -0.1); }
+		
 	}
-	if (kb->isKeyDown(KC_X)) {
-		playerVehicle->translateLocal(0, 0, 0.1);
+	if (kb->isKeyDown(KC_X)|| kb->isKeyDown(KC_DOWN)) {
+		if (d < 1) { 
+			d += 0.1;
+			std::cout << d << std::endl; 
+			playerVehicle->translateLocal(0, 0, -0.15);
+		}
+		else { playerVehicle->translateLocal(0, 0, 0.1); }
+		
 	}
 
     /*if (kb->isKeyDown(KC_UP))
