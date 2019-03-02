@@ -17,6 +17,34 @@ GLfloat p2x;
 GLfloat p2y;
 GLfloat p2z;
 
+//var for left wall
+GLfloat distLeftWall;
+GLfloat p3LWx;
+GLfloat p3LWy;
+GLfloat p3LWz;
+
+const int p3radius = 90;
+
+//var for right wall
+GLfloat distRightWall;
+GLfloat p4RWx;
+GLfloat p4RWy;
+GLfloat p4RWz;
+
+const int p4radius = 1;
+
+//var for finish line
+GLfloat distFinishLine;
+GLfloat p5FLx;
+GLfloat p5FLy;
+GLfloat p5FLz;
+
+const int p5radius = 1;
+
+//check for if finish line is hit
+bool finishLineHit = false;
+
+
 BasicSceneRenderer::BasicSceneRenderer()
     : mLightingModel(PER_VERTEX_DIR_LIGHT)
     , mCamera(NULL)
@@ -31,6 +59,18 @@ void calculateDistance() {
 	//set the distance to the current distance between car and obstacle
 	//TODO: update for collision with more than one entity
 	d = sqrt(((p1x - p2x) * (p1x - p2x)) + ((p1y - p2y) * (p1y - p2y)) + ((p1z - p2z) * (p1z - p2z)));
+}
+
+void leftWallCollisionCheck() {
+	distLeftWall = sqrt(((p1x - p3LWx) * (p1x - p3LWx)) + ((p1y - p1y) * (p1y - p1y)) + ((p1z - p1z) * (p1z - p1z)));
+}
+
+void rightWallCollisionCheck() {
+	distRightWall = sqrt(((p1x - p4RWx) * (p1x - p4RWx)) + ((p1y - p1y) * (p1y - p1y)) + ((p1z - p1z) * (p1z - p1z)));
+}
+
+void finishLineCollisionCheck() {
+	distFinishLine = sqrt(((p1x - p1x) * (p1x - p1x)) + ((p1y - p1y) * (p1y - p1y)) + ((p1z - p5FLz) * (p1z - p5FLz)));
 }
 
 void BasicSceneRenderer::initialize()
@@ -78,18 +118,22 @@ void BasicSceneRenderer::initialize()
 
     float roomWidth = 12;
     float roomHeight = 24;
-    float roomDepth = 64;
+    float roomDepth = 680;
     float roomTilesPerUnit = 0.25f;
 
     // front and back walls
     Mesh* fbMesh = CreateTexturedQuad(roomWidth, roomHeight, roomWidth * roomTilesPerUnit, roomHeight * roomTilesPerUnit);
     mMeshes.push_back(fbMesh);
     // left and right walls
-    Mesh* lrMesh = CreateTexturedQuad(roomDepth, roomHeight, roomDepth * roomTilesPerUnit, roomHeight * roomTilesPerUnit);
+    Mesh* lrMesh = CreateTexturedQuad(roomDepth, 3, roomDepth * roomTilesPerUnit, 3 * roomTilesPerUnit);
     mMeshes.push_back(lrMesh);
     // ceiling and floor
     Mesh* cfMesh = CreateTexturedQuad(roomWidth, roomDepth, roomWidth * roomTilesPerUnit, roomDepth * roomTilesPerUnit);
     mMeshes.push_back(cfMesh);
+
+	//finishline banner
+	Mesh* flMesh = CreateTexturedQuad(roomWidth, 3, roomDepth * roomTilesPerUnit, 3 * roomTilesPerUnit);
+	mMeshes.push_back(flMesh);
 
     //
     // Load textures
@@ -148,8 +192,17 @@ void BasicSceneRenderer::initialize()
     float spacing = 3;
     float z = 0.5f * spacing * numRows;
 	//TODO: Car and Obstacles created here
+
+	// left wall
+	mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(-0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	// right wall
+	mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+
+	//finish line
+	mEntities.push_back(new Entity(flMesh, mMaterials[7], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+
 	// floor
-	mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
+	mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
 	//car
 	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 30)));
 	//test obstacle
@@ -456,7 +509,7 @@ bool BasicSceneRenderer::update(float dt)
 	if (kb->keyPressed(KC_ESCAPE))
 		return false;
 
-	mActiveEntityIndex = 1;
+	mActiveEntityIndex = 4;
 	int rbuffer = rand() % 5 + 1;
 	int randomDistance = rand() % 5 - rbuffer;
 	// move forward through our list of entities
@@ -478,99 +531,149 @@ bool BasicSceneRenderer::update(float dt)
 	// get the entity to manipulate
 	Entity* activeEntity = mEntities[mActiveEntityIndex];
 	//player is the first thing we render so it's mEntities 0
-	Entity* playerVehicle = mEntities[1];
+	Entity* playerVehicle = mEntities[4];
 	//test obstacle
-	Entity* obstacle = mEntities[2];
+	Entity* obstacle = mEntities[5];
+	//left wall
+	Entity* leftWall = mEntities[0];
+	//right wall
+	Entity* rightWall = mEntities[1];
+	//finish line
+	Entity* finishLine = mEntities[2];
 	//position of the car, can use carPos.x, etc. for coordinates
 	glm::vec3 carPos = playerVehicle->getPosition();
 	//position of test obstacle
 	glm::vec3 obsPos = obstacle->getPosition();
 	//camera position vector
 	glm::vec3 cameraPosition = mCamera->getPosition();
+	//left wall position
+	glm::vec3 leftWallPos = leftWall->getPosition();
+	//right wall position
+	glm::vec3 rightWallPos = rightWall->getPosition();
+	//finish line position
+	glm::vec3 finishLinePos = finishLine->getPosition();
 
 	// rotate the entity
 	float rotSpeed = 90;
 	float rotAmount = rotSpeed * dt;
 
+	//capture of left wall
+	p3LWx = leftWallPos.x;
+	p3LWy = leftWallPos.y;
+	p3LWz = leftWallPos.z;
+
+	//capture of right wall
+	p4RWx = rightWallPos.x;
+	p4RWy = rightWallPos.y;
+	p4RWz = rightWallPos.z;
+
+	//capture of finish line
+	p5FLx = finishLinePos.x;
+	p5FLy = finishLinePos.y;
+	p5FLz = finishLinePos.z;
+
+	//capture of car position
 	p1x = carPos.x;
 	p1y = carPos.y;
 	p1z = carPos.z;
+
+	//capture of object position
 	p2x = obsPos.x;
 	p2y = obsPos.y;
 	p2z = obsPos.z;
 	
+	//collision check with pickups
 	calculateDistance();
+
+	//collision check with left wall
+	leftWallCollisionCheck();
 	
-	//movement controls for the car, forward, backward, left, right
-	//if key's pressed
-	if (kb->isKeyDown(KC_LEFT)) {
-		/*
-		recalculate distance
-		add 0.1 to distance
-		then if distance is less than 1
-		*/
-		//activeEntity->rotate(rotAmount, 0, 1, 0);
-		if (d < 1) {
-			d += 0.1;
-			//std::cout << d << std::endl;
-			//playerVehicle->translateLocal(0.15, 0, 0);
-			mEntities.pop_back();
-			mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
-			score += 1;
-			std::cout << score << std::endl;
+	//collision check with right wall
+	rightWallCollisionCheck();
+
+	//collision check with finish line
+	finishLineCollisionCheck();
+
+
+	if (!finishLineHit) {
+
+		//movement controls for the car, forward, backward, left, right
+		//if key's pressed
+		if (kb->isKeyDown(KC_LEFT)) {
+			/*
+			recalculate distance
+			add 0.1 to distance
+			then if distance is less than 1
+			*/
+			//activeEntity->rotate(rotAmount, 0, 1, 0);
+			if (d < 1) {
+				d += 0.1;
+				//std::cout << d << std::endl;
+				//playerVehicle->translateLocal(0.15, 0, 0);
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				score += 1;
+				std::cout << score << std::endl;
+			}
+			else if (distLeftWall > 0.525) {
+				playerVehicle->translateLocal(-0.1, 0, 0);
+			}
 		}
-		else{ 
-			playerVehicle->translateLocal(-0.1, 0, 0);
-		}
-	}
-	if (kb->isKeyDown(KC_RIGHT)) {
-		//activeEntity->rotate(-rotAmount, 0, 1, 0);
-		if (d<1) { 
-			d += 0.1;
-			//std::cout << d << std::endl;
-			//playerVehicle->translateLocal(-0.15, 0, 0);
-			mEntities.pop_back();
-			mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
-			score += 1;
-			std::cout << score << std::endl;
-		}
-		else { playerVehicle->translateLocal(0.1, 0, 0); }
-		
-	}
-	if (kb->isKeyDown(KC_Z) || kb->isKeyDown(KC_UP)) {
-		if (d < 1) { 
-			d += 0.1;
-			//std::cout << d << std::endl;
-			//playerVehicle->translateLocal(0, 0, 0.1);
-			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-			mEntities.pop_back();
-			mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z-10)));
-			score += 1;
-			std::cout << score << std::endl;
+		if (kb->isKeyDown(KC_RIGHT)) {
+			//activeEntity->rotate(-rotAmount, 0, 1, 0);
+			if (d < 1) {
+				d += 0.1;
+				//std::cout << d << std::endl;
+				//playerVehicle->translateLocal(-0.15, 0, 0);
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				score += 1;
+				std::cout << score << std::endl;
+			}
+			else if (distRightWall > 0.525) {
+				playerVehicle->translateLocal(0.1, 0, 0);
+			}
 
 		}
-		else { 
-			playerVehicle->translateLocal(0, 0, -0.2); 
-			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.2);
+		if (kb->isKeyDown(KC_Z) || kb->isKeyDown(KC_UP)) {
+			if (d < 1) {
+				d += 0.1;
+				//std::cout << d << std::endl;
+				//playerVehicle->translateLocal(0, 0, 0.1);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				score += 1;
+				std::cout << score << std::endl;
+
+			}
+			//if finish line reached, pop car and pickup
+			else if (distFinishLine < 0.525) {
+				finishLineHit = true;
+			}
+			else {
+				playerVehicle->translateLocal(0, 0, -0.02);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.02);
+			}
+
 		}
-		
-	}
-	if (kb->isKeyDown(KC_X)|| kb->isKeyDown(KC_DOWN)) {
-		if (d < 1) { 
-			d += 0.1;
-			//std::cout << d << std::endl; 
-			//playerVehicle->translateLocal(0, 0, -0.1);
-			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-			mEntities.pop_back();
-			mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
-			score += 1;
-			std::cout << score << std::endl;
+		if (kb->isKeyDown(KC_X) || kb->isKeyDown(KC_DOWN)) {
+			if (d < 1) {
+				d += 0.1;
+				//std::cout << d << std::endl; 
+				//playerVehicle->translateLocal(0, 0, -0.1);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				score += 1;
+				std::cout << score << std::endl;
+			}
+			else {
+				playerVehicle->translateLocal(0, 0, 0.02);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.02);
+			}
+
 		}
-		else { 
-			playerVehicle->translateLocal(0, 0, 0.2); 
-			mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.2);
-		}
-		
 	}
 
     /*if (kb->isKeyDown(KC_UP))
