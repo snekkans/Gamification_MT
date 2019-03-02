@@ -1,14 +1,16 @@
 ﻿  BasicSceneRenderer.cpp
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(507): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(509): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(512): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(518): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(520): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(522): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(527): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(533): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(534): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(540): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(546): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(547): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(514): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(518): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(523): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(529): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(533): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(537): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(542): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(547): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(553): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(554): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(560): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(565): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(570): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(571): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   BasicScene.vcxproj -> C:\Users\ShadeFoundry\Desktop\Gamification_MT\MovingCar\Debug\BasicScene.exe
