@@ -718,7 +718,7 @@ bool BasicSceneRenderer::update(float dt)
 			}
 
 		}
-		if (kb->isKeyDown(KC_X) || kb->isKeyDown(KC_DOWN)) {
+		else if (kb->isKeyDown(KC_X) || kb->isKeyDown(KC_DOWN)) {
 			if (d < 1) {
 				d += 0.1;
 				//std::cout << d << std::endl; 
@@ -728,6 +728,14 @@ bool BasicSceneRenderer::update(float dt)
 				mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(randomX, -11.5, carPos.z - randomZ)));
 				score += 1;
 				std::cout << score << std::endl;
+			}
+			//if finish line reached, pop car and pickup
+			else if (distFinishLine < 0.525) {
+				finishLineHit = true;
+
+				// pop pickup to replace with win condition mesh
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 			}
 			else {
 				playerVehicle->translateLocal(0, 0, 0.1);
