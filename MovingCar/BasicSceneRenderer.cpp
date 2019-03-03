@@ -2,11 +2,11 @@
 #include "Image.h"
 #include "Prefabs.h"
 #include <GL/glut.h>
-#include<stdlib.h>
+#include <stdlib.h>
 #include <iostream>
 
 GLfloat d;
-GLfloat score;
+float score;
 GLfloat p1x;
 GLfloat p1y;
 GLfloat p1z;
@@ -141,10 +141,11 @@ void BasicSceneRenderer::initialize()
 
     std::vector<std::string> texNames;
     texNames.push_back("textures/CarvedSandstone.tga");
+	texNames.push_back("textures/Road.tga");
     texNames.push_back("textures/rocky.tga");
-    texNames.push_back("textures/bricks_overpainted_blue_9291383.tga");
-    texNames.push_back("textures/water_drops_on_metal_3020602.tga");
-    texNames.push_back("textures/skin.tga");
+    texNames.push_back("textures/Block.tga");
+    texNames.push_back("textures/Eyes.tga");
+    texNames.push_back("textures/Rock.tga");
     texNames.push_back("textures/white.tga");
     texNames.push_back("textures/yo.tga");
     texNames.push_back("textures/black.tga");
@@ -194,19 +195,19 @@ void BasicSceneRenderer::initialize()
 	//TODO: Car and Obstacles created here
 
 	// left wall
-	mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(-0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(lrMesh, mMaterials[5], Transform(-0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 	// right wall
-	mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(lrMesh, mMaterials[5], Transform(0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	//finish line
-	mEntities.push_back(new Entity(flMesh, mMaterials[7], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(flMesh, mMaterials[6], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	// floor
 	mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
 	//car
-	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(0.0f, -11.5f, 30)));
+	mEntities.push_back(new Entity(mMeshes[0], mMaterials[4], Transform(0.0f, -11.5f, 30)));
 	//test obstacle
-	mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(2.0f, -11.5f, 20)));
+	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(2.0f, -11.5f, 20)));
 	z -= spacing;
 	/*
 	for (unsigned i = 2; i < mMaterials.size(); i++) {
@@ -511,7 +512,8 @@ bool BasicSceneRenderer::update(float dt)
 
 	mActiveEntityIndex = 4;
 	int rbuffer = rand() % 5 + 1;
-	int randomDistance = rand() % 5 - rbuffer;
+	int randomX = rand() % 5 - rbuffer;
+	int randomZ = rand() % 32 + 16;
 	// move forward through our list of entities
 	/*if (kb->keyPressed(KC_Q)) {
 		// compute next entity index
@@ -556,6 +558,8 @@ bool BasicSceneRenderer::update(float dt)
 	// rotate the entity
 	float rotSpeed = 90;
 	float rotAmount = rotSpeed * dt;
+
+	mEntities[5]->rotate(2.5, 0, 1.0, 0);
 
 	//capture of left wall
 	p3LWx = leftWallPos.x;
@@ -611,7 +615,7 @@ bool BasicSceneRenderer::update(float dt)
 				//std::cout << d << std::endl;
 				//playerVehicle->translateLocal(0.15, 0, 0);
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(randomX, -11.5, carPos.z - randomZ)));
 				score += 1;
 				std::cout << score << std::endl;
 			}
@@ -626,7 +630,7 @@ bool BasicSceneRenderer::update(float dt)
 				//std::cout << d << std::endl;
 				//playerVehicle->translateLocal(-0.15, 0, 0);
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(randomX, -11.5, carPos.z - randomZ)));
 				score += 1;
 				std::cout << score << std::endl;
 			}
@@ -642,7 +646,7 @@ bool BasicSceneRenderer::update(float dt)
 				//playerVehicle->translateLocal(0, 0, 0.1);
 				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(randomX, -11.5, carPos.z - randomZ)));
 				score += 1;
 				std::cout << score << std::endl;
 
@@ -652,8 +656,8 @@ bool BasicSceneRenderer::update(float dt)
 				finishLineHit = true;
 			}
 			else {
-				playerVehicle->translateLocal(0, 0, -0.02);
-				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.02);
+				playerVehicle->translateLocal(0, 0, -0.3);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.3);
 			}
 
 		}
@@ -664,13 +668,13 @@ bool BasicSceneRenderer::update(float dt)
 				//playerVehicle->translateLocal(0, 0, -0.1);
 				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z);
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[0], mMaterials[2], Transform(randomDistance, -11.5, carPos.z - 10)));
+				mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(randomX, -11.5, carPos.z - randomZ)));
 				score += 1;
 				std::cout << score << std::endl;
 			}
 			else {
-				playerVehicle->translateLocal(0, 0, 0.02);
-				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.02);
+				playerVehicle->translateLocal(0, 0, 0.3);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.3);
 			}
 
 		}
