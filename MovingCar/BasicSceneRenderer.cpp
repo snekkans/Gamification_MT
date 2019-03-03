@@ -46,7 +46,7 @@ bool finishLineHit = false;
 
 
 BasicSceneRenderer::BasicSceneRenderer()
-    : mLightingModel(PER_VERTEX_DIR_LIGHT)
+    : mLightingModel(BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT)
     , mCamera(NULL)
     , mProjMatrix(1.0f)
     , mActiveEntityIndex(0)
@@ -339,7 +339,7 @@ void BasicSceneRenderer::draw()
         // send light color/intensity
         prog->sendUniform("u_LightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
-    } /*else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT) {
+    } else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT) {
 
         //----------------------------------------------------------------------------------//
         //                                                                                  //
@@ -393,7 +393,7 @@ void BasicSceneRenderer::draw()
             lightMesh->draw();
         }
 
-    }*/ /*else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_MULTI_LIGHT) {
+    } /*else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_MULTI_LIGHT) {
 
         //----------------------------------------------------------------------------------//
         //                                                                                  //
