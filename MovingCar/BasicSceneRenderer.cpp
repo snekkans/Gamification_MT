@@ -579,11 +579,9 @@ bool BasicSceneRenderer::update(float dt)
 	//finish line position
 	glm::vec3 finishLinePos = finishLine->getPosition();
 
-	// rotate the entity
+	// set up for pickup rotation 
 	float rotSpeed = 90;
 	float rotAmount = rotSpeed * dt;
-
-	mEntities[5]->rotate(2.5, 0, 1.0, 0);
 
 	//capture of left wall
 	p3LWx = leftWallPos.x;
@@ -624,6 +622,9 @@ bool BasicSceneRenderer::update(float dt)
 
 
 	if (!finishLineHit) {
+
+		// rotate the entity
+		mEntities[5]->rotate(2.5, 0, 1.0, 0);
 
 		//movement controls for the car, forward, backward, left, right
 		//if key's pressed
