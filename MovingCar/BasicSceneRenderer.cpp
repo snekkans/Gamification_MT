@@ -73,6 +73,28 @@ void finishLineCollisionCheck() {
 	distFinishLine = sqrt(((p1x - p1x) * (p1x - p1x)) + ((p1y - p1y) * (p1y - p1y)) + ((p1z - p5FLz) * (p1z - p5FLz)));
 }
 
+void setVSync(bool sync)
+{
+	// Function pointer for the wgl extention function we need to enable/disable
+	// vsync
+	typedef BOOL(APIENTRY *PFNWGLSWAPINTERVALPROC)(int);
+	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = 0;
+
+	const char *extensions = (char*)glGetString(GL_EXTENSIONS);
+
+	if (strstr(extensions, "WGL_EXT_swap_control") == 0)
+	{
+		return;
+	}
+	else
+	{
+		wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
+
+		if (wglSwapIntervalEXT)
+			wglSwapIntervalEXT(sync);
+	}
+}
+
 void BasicSceneRenderer::initialize()
 {
     // print usage instructions
@@ -254,6 +276,8 @@ void BasicSceneRenderer::initialize()
 
     // create geometry for axes
     mAxes = CreateAxes(2);
+
+	setVSync(1);  // enable VSync
 
     CHECK_GL_ERRORS("initialization");
 }
