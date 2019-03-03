@@ -521,7 +521,7 @@ void BasicSceneRenderer::draw()
     mDbgProgram->sendUniform("u_ModelviewMatrix", viewMatrix * activeEntity->getWorldMatrix());
     mAxes->activate();
     //comment out the line below to get rid of axes
-	mAxes->draw();
+	//mAxes->draw();
 
     CHECK_GL_ERRORS("drawing");
 }
