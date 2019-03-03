@@ -150,6 +150,7 @@ void BasicSceneRenderer::initialize()
     // front and back walls
     Mesh* fbMesh = CreateTexturedQuad(roomWidth, roomHeight, roomWidth * roomTilesPerUnit, roomHeight * roomTilesPerUnit);
     mMeshes.push_back(fbMesh);
+
     // left and right wall
 	mMeshes.push_back(CreateSolidBox(roomDepth, 2, 1));
 
@@ -160,6 +161,10 @@ void BasicSceneRenderer::initialize()
 	//finishline banner
 	Mesh* flMesh = CreateTexturedQuad(roomWidth, 3, roomDepth * roomTilesPerUnit, 3 * roomTilesPerUnit);
 	mMeshes.push_back(flMesh);
+
+	//win/loss banner
+	Mesh* winLossMesh = CreateTexturedQuad(3.2, 2.4, roomDepth * roomTilesPerUnit, 3 * roomTilesPerUnit);
+	mMeshes.push_back(winLossMesh);
 
     //
     // Load textures
@@ -655,6 +660,11 @@ bool BasicSceneRenderer::update(float dt)
 			else {
 				// wall hit collision, cause player death
 				wallHit = true;
+
+				// pop pickup to replace with loss condition mesh
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+
 			}
 		}
 		if (kb->isKeyDown(KC_RIGHT)) {
@@ -674,6 +684,11 @@ bool BasicSceneRenderer::update(float dt)
 			else {
 				// wall hit collision, cause player death
 				wallHit = true;
+
+				// pop pickup to replace with loss condition mesh
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+
 			}
 
 		}
@@ -692,6 +707,10 @@ bool BasicSceneRenderer::update(float dt)
 			//if finish line reached, pop car and pickup
 			else if (distFinishLine < 0.525) {
 				finishLineHit = true;
+
+				// pop pickup to replace with win condition mesh
+				mEntities.pop_back();
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 			}
 			else {
 				playerVehicle->translateLocal(0, 0, -0.4);
