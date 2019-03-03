@@ -1,16 +1,16 @@
 ﻿  BasicSceneRenderer.cpp
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(638): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(642): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(647): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(653): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(657): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(662): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(668): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(673): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(683): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(684): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(690): warning C4305: '+=': truncation from 'double' to 'GLfloat'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(695): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(700): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(701): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(639): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(643): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(648): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(654): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(658): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(663): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(669): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(674): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(684): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(685): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(691): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(696): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(701): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\shadefoundry\desktop\gamification_mt\movingcar\basicscenerenderer.cpp(702): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   BasicScene.vcxproj -> C:\Users\ShadeFoundry\Desktop\Gamification_MT\MovingCar\Debug\BasicScene.exe

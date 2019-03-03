@@ -222,7 +222,7 @@ void BasicSceneRenderer::initialize()
 	mEntities.push_back(new Entity(lrMesh, mMaterials[5], Transform(0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	//finish line
-	mEntities.push_back(new Entity(flMesh, mMaterials[6], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(flMesh, mMaterials[2], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	// floor
 	mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
@@ -681,8 +681,8 @@ bool BasicSceneRenderer::update(float dt)
 				finishLineHit = true;
 			}
 			else {
-				playerVehicle->translateLocal(0, 0, -0.3);
-				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.3);
+				playerVehicle->translateLocal(0, 0, -0.4);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.4);
 			}
 
 		}
@@ -698,8 +698,8 @@ bool BasicSceneRenderer::update(float dt)
 				std::cout << score << std::endl;
 			}
 			else {
-				playerVehicle->translateLocal(0, 0, 0.3);
-				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.3);
+				playerVehicle->translateLocal(0, 0, 0.1);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z + 0.1);
 			}
 
 		}
