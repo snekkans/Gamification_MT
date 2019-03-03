@@ -44,6 +44,10 @@ const int p5radius = 1;
 //check for if finish line is hit
 bool finishLineHit = false;
 
+// wall hit collision, cause player death
+bool wallHit = false;
+
+
 
 BasicSceneRenderer::BasicSceneRenderer()
     : mLightingModel(BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT)
@@ -107,7 +111,7 @@ void BasicSceneRenderer::initialize()
     std::cout << "  Cycle active entity:      X/Z" << std::endl;
     std::cout << "  Toggle point light vis.:  Tab" << std::endl;
 
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.494117f, 0.75294f, 0.93333f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -146,9 +150,9 @@ void BasicSceneRenderer::initialize()
     // front and back walls
     Mesh* fbMesh = CreateTexturedQuad(roomWidth, roomHeight, roomWidth * roomTilesPerUnit, roomHeight * roomTilesPerUnit);
     mMeshes.push_back(fbMesh);
-    // left and right walls
-    Mesh* lrMesh = CreateTexturedQuad(roomDepth, 3, roomDepth * roomTilesPerUnit, 3 * roomTilesPerUnit);
-    mMeshes.push_back(lrMesh);
+    // left and right wall
+	mMeshes.push_back(CreateSolidBox(roomDepth, 2, 1));
+
     // ceiling and floor
     Mesh* cfMesh = CreateTexturedQuad(roomWidth, roomDepth, roomWidth * roomTilesPerUnit, roomDepth * roomTilesPerUnit);
     mMeshes.push_back(cfMesh);
@@ -217,9 +221,10 @@ void BasicSceneRenderer::initialize()
 	//TODO: Car and Obstacles created here
 
 	// left wall
-	mEntities.push_back(new Entity(lrMesh, mMaterials[5], Transform(-0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(mMeshes[4], mMaterials[5], Transform(-0.5f * roomWidth, -11, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+
 	// right wall
-	mEntities.push_back(new Entity(lrMesh, mMaterials[5], Transform(0.5f * roomWidth, -10.5, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(mMeshes[4], mMaterials[5], Transform(0.5f * roomWidth, -11, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	//finish line
 	mEntities.push_back(new Entity(flMesh, mMaterials[2], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
@@ -621,7 +626,7 @@ bool BasicSceneRenderer::update(float dt)
 	finishLineCollisionCheck();
 
 
-	if (!finishLineHit) {
+	if (!finishLineHit && !wallHit) {
 
 		// rotate the entity
 		mEntities[5]->rotate(2.5, 0, 1.0, 0);
@@ -644,8 +649,12 @@ bool BasicSceneRenderer::update(float dt)
 				score += 1;
 				std::cout << score << std::endl;
 			}
-			else if (distLeftWall > 0.525) {
+			else if (distLeftWall > 1.1) {
 				playerVehicle->translateLocal(-0.1, 0, 0);
+			}
+			else {
+				// wall hit collision, cause player death
+				wallHit = true;
 			}
 		}
 		if (kb->isKeyDown(KC_RIGHT)) {
@@ -659,8 +668,12 @@ bool BasicSceneRenderer::update(float dt)
 				score += 1;
 				std::cout << score << std::endl;
 			}
-			else if (distRightWall > 0.525) {
+			else if (distRightWall > 1.1) {
 				playerVehicle->translateLocal(0.1, 0, 0);
+			}
+			else {
+				// wall hit collision, cause player death
+				wallHit = true;
 			}
 
 		}
