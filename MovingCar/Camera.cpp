@@ -113,7 +113,7 @@ void Camera::update(float deltaT)
 	glm::vec3 localMoveVec(0.0f, 0.0f, 0.0f);
 
 	// move forward and back
-	if (kb->isKeyDown(KC_W))
+	/*if (kb->isKeyDown(KC_W))
 		//if (kb->isKeyDown(KC_LEFT)){
 		//	localMoveVec.x -= 1;
 		//	localMoveVec.z += 1;
@@ -135,7 +135,7 @@ void Camera::update(float deltaT)
     if (kb->isKeyDown(KC_E))
         localMoveVec.y += 1;
     if (kb->isKeyDown(KC_C))
-        localMoveVec.y -= 1;
+        localMoveVec.y -= 1;*/
 
     float localMoveLen = glm::length(localMoveVec);
 

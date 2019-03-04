@@ -179,7 +179,8 @@ void BasicSceneRenderer::initialize()
     texNames.push_back("textures/Rock.tga");
     texNames.push_back("textures/white.tga");
     texNames.push_back("textures/yo.tga");
-    texNames.push_back("textures/black.tga");
+    texNames.push_back("textures/YoureLoser.tga");
+	texNames.push_back("textures/YoureWinner.tga");
 
     for (unsigned i = 0; i < texNames.size(); i++)
         mTextures.push_back(new Texture(texNames[i], GL_REPEAT, GL_LINEAR));
@@ -241,39 +242,8 @@ void BasicSceneRenderer::initialize()
 	//test obstacle
 	mEntities.push_back(new Entity(mMeshes[0], mMaterials[3], Transform(2.0f, -11.5f, 20)));
 	z -= spacing;
-	/*
-	for (unsigned i = 2; i < mMaterials.size(); i++) {
-        // cube
-        mEntities.push_back(new Entity(mMeshes[0], mMaterials[i], Transform(-4.0f, 0.0f, z)));
-        // chunky cylinder
-        mEntities.push_back(new Entity(mMeshes[1], mMaterials[i], Transform( 0.0f, 0.0f, z)));
-        // smooth cylinder
-        mEntities.push_back(new Entity(mMeshes[2], mMaterials[i], Transform( 4.0f, 0.0f, z)));
 
-        // next row
-        z -= spacing;
-    }
-	*/
-    //
-    // Create room
-    //
-
-    // back wall
-    /*mEntities.push_back(new Entity(fbMesh, mMaterials[1], Transform(0, 0, -0.5f * roomDepth)));
-    // front wall
-    mEntities.push_back(new Entity(fbMesh, mMaterials[1], Transform(0, 0, 0.5f * roomDepth, glm::angleAxis(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
-    // left wall
-    mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(-0.5f * roomWidth, 0, 0, glm::angleAxis(glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
-    // right wall
-    mEntities.push_back(new Entity(lrMesh, mMaterials[1], Transform(0.5f * roomWidth, 0, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));*/
-    // floor
-    //mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, 0, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
-    // ceiling
-    //mEntities.push_back(new Entity(cfMesh, mMaterials[0], Transform(0, 0.5f * roomHeight, 0, glm::angleAxis(glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
-
-    //
     // create the camera
-    //
 
     mCamera = new Camera(this);
     mCamera->setPosition(0, -8, 40);
@@ -352,9 +322,7 @@ void BasicSceneRenderer::draw()
     // get the view matrix from the camera
     glm::mat4 viewMatrix = mCamera->getViewMatrix();
 
-    //
     // light setup depends on lighting model
-    //
 
     if (mLightingModel == PER_VERTEX_DIR_LIGHT) {
 
@@ -427,68 +395,7 @@ void BasicSceneRenderer::draw()
             lightMesh->draw();
         }
 
-    } /*else if (mLightingModel == BLINN_PHONG_PER_FRAGMENT_MULTI_LIGHT) {
-
-        //----------------------------------------------------------------------------------//
-        //                                                                                  //
-        // Multiple directional/point lights                                                //
-        //                                                                                  //
-        //----------------------------------------------------------------------------------//
-
-        prog->sendUniform("u_AmbientLightColor", glm::vec3(0.1f, 0.1f, 0.1f));
-
-        prog->sendUniformInt("u_NumDirLights", 1);
-        prog->sendUniformInt("u_NumPointLights", 3);
-
-        // directional light
-        glm::vec4 lightDir = glm::normalize(glm::vec4(1, 3, 2, 0));
-        prog->sendUniform("u_DirLights[0].dir", glm::vec3(viewMatrix * lightDir));
-        prog->sendUniform("u_DirLights[0].color", glm::vec3(0.3f, 0.3f, 0.3f));
-
-        // point light
-        glm::vec3 lightPos1 = glm::vec3(-7, 5, -12);
-        glm::vec3 lightColor1 = glm::vec3(1.0f, 0.0f, 0.0f);
-        prog->sendUniform("u_PointLights[0].pos", glm::vec3(viewMatrix * glm::vec4(lightPos1, 1)));
-        prog->sendUniform("u_PointLights[0].color", lightColor1);
-        prog->sendUniform("u_PointLights[0].attQuat", 0.01f);
-        prog->sendUniform("u_PointLights[0].attLin", 0.1f);
-        prog->sendUniform("u_PointLights[0].attConst", 1.0f);
-
-        // point light
-        glm::vec3 lightPos2 = glm::vec3(7, 5, -12);
-        glm::vec3 lightColor2 = glm::vec3(0.0f, 0.0f, 1.0f);
-        prog->sendUniform("u_PointLights[1].pos", glm::vec3(viewMatrix * glm::vec4(lightPos2, 1)));
-        prog->sendUniform("u_PointLights[1].color", lightColor2);
-        prog->sendUniform("u_PointLights[1].attQuat", 0.01f);
-        prog->sendUniform("u_PointLights[1].attLin", 0.1f);
-        prog->sendUniform("u_PointLights[1].attConst", 1.0f);
-
-        // point light
-        glm::vec3 lightPos3 = glm::vec3(-7, -5, 15);
-        glm::vec3 lightColor3 = glm::vec3(0.0f, 1.0f, 0.0f);
-        prog->sendUniform("u_PointLights[2].pos", glm::vec3(viewMatrix * glm::vec4(lightPos3, 1)));
-        prog->sendUniform("u_PointLights[2].color", lightColor3);
-        prog->sendUniform("u_PointLights[2].attQuat", 0.01f);
-        prog->sendUniform("u_PointLights[2].attLin", 0.1f);
-        prog->sendUniform("u_PointLights[2].attConst", 1.0f);
-
-        // render the point lights as emissive cubes, if desirable
-        if (mVisualizePointLights) {
-            glBindTexture(GL_TEXTURE_2D, mTextures[7]->id());  // use black texture
-            prog->sendUniform("u_NormalMatrix", glm::mat3(1.0f));
-            const Mesh* lightMesh = mMeshes[0];
-            lightMesh->activate();
-            prog->sendUniform("u_MatEmissiveColor", lightColor1);
-            prog->sendUniform("u_ModelviewMatrix", glm::translate(viewMatrix, glm::vec3(lightPos1)));
-            lightMesh->draw();
-            prog->sendUniform("u_MatEmissiveColor", lightColor2);
-            prog->sendUniform("u_ModelviewMatrix", glm::translate(viewMatrix, glm::vec3(lightPos2)));
-            lightMesh->draw();
-            prog->sendUniform("u_MatEmissiveColor", lightColor3);
-            prog->sendUniform("u_ModelviewMatrix", glm::translate(viewMatrix, glm::vec3(lightPos3)));
-            lightMesh->draw();
-        }
-    }*/
+    }
 
     // render all entities
     for (unsigned i = 0; i < mEntities.size(); i++) {
@@ -548,21 +455,6 @@ bool BasicSceneRenderer::update(float dt)
 	int rbuffer = rand() % 5 + 1;
 	int randomX = rand() % 5 - rbuffer;
 	int randomZ = rand() % 32 + 16;
-	// move forward through our list of entities
-	/*if (kb->keyPressed(KC_Q)) {
-		// compute next entity index
-		++mActiveEntityIndex;
-		if (mActiveEntityIndex >= (int)mEntities.size())
-			mActiveEntityIndex = 0;
-	}
-
-	// move backward through our list of entities
-	if (kb->keyPressed(KC_Z)) {
-		// compute previous entity index
-		--mActiveEntityIndex;
-		if (mActiveEntityIndex < 0)
-			mActiveEntityIndex = (int)mEntities.size() - 1;
-	}*/
 
 	// get the entity to manipulate
 	Entity* activeEntity = mEntities[mActiveEntityIndex];
@@ -639,12 +531,6 @@ bool BasicSceneRenderer::update(float dt)
 		//movement controls for the car, forward, backward, left, right
 		//if key's pressed
 		if (kb->isKeyDown(KC_LEFT)) {
-			/*
-			recalculate distance
-			add 0.1 to distance
-			then if distance is less than 1
-			*/
-			//activeEntity->rotate(rotAmount, 0, 1, 0);
 			if (d < 1) {
 				d += 0.1;
 				//std::cout << d << std::endl;
@@ -663,7 +549,7 @@ bool BasicSceneRenderer::update(float dt)
 
 				// pop pickup to replace with loss condition mesh
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 			}
 		}
@@ -687,7 +573,7 @@ bool BasicSceneRenderer::update(float dt)
 
 				// pop pickup to replace with loss condition mesh
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 			}
 
@@ -710,7 +596,7 @@ bool BasicSceneRenderer::update(float dt)
 
 				// pop pickup to replace with win condition mesh
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[9], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 			}
 			else {
 				playerVehicle->translateLocal(0, 0, -0.4);
@@ -735,7 +621,8 @@ bool BasicSceneRenderer::update(float dt)
 
 				// pop pickup to replace with win condition mesh
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[7], mMaterials[2], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+				//winner mesh
+				mEntities.push_back(new Entity(mMeshes[7], mMaterials[9], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 			}
 			else {
 				playerVehicle->translateLocal(0, 0, 0.1);
@@ -744,52 +631,6 @@ bool BasicSceneRenderer::update(float dt)
 
 		}
 	}
-
-    /*if (kb->isKeyDown(KC_UP))
-        activeEntity->rotate(rotAmount, 1, 0, 0);
-    if (kb->isKeyDown(KC_DOWN))
-        activeEntity->rotate(-rotAmount, 1, 0, 0);*/
-
-    // reset entity orientation
-    /*if (kb->keyPressed(KC_R))
-        activeEntity->setOrientation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
-
-    float speed = 3;
-    float disp = speed * dt;
-
-    // move entity along world axes
-    if (kb->isKeyDown(KC_I))
-        activeEntity->translate(0, 0, disp);
-    if (kb->isKeyDown(KC_K))
-        activeEntity->translate(0, 0, -disp);
-    if (kb->isKeyDown(KC_L))
-        activeEntity->translate(disp, 0, 0);
-    if (kb->isKeyDown(KC_J))
-        activeEntity->translate(-disp, 0, 0);
-
-    // move entity along entity's local axes
-    if (kb->isKeyDown(KC_T))
-        activeEntity->translateLocal(0, 0, disp);
-    if (kb->isKeyDown(KC_G))
-        activeEntity->translateLocal(0, 0, -disp);
-    if (kb->isKeyDown(KC_F))
-        activeEntity->translateLocal(disp, 0, 0);
-    if (kb->isKeyDown(KC_H))
-        activeEntity->translateLocal(-disp, 0, 0);
-
-    // change lighting models
-    if (kb->keyPressed(KC_1))
-        mLightingModel = PER_VERTEX_DIR_LIGHT;
-    if (kb->keyPressed(KC_2))
-        mLightingModel = BLINN_PHONG_PER_FRAGMENT_DIR_LIGHT;
-    if (kb->keyPressed(KC_3))
-        mLightingModel = BLINN_PHONG_PER_FRAGMENT_POINT_LIGHT;
-    if (kb->keyPressed(KC_4))
-        mLightingModel = BLINN_PHONG_PER_FRAGMENT_MULTI_LIGHT;
-
-    // toggle visualization of point lights
-    if (kb->keyPressed(KC_TAB))
-        mVisualizePointLights = !mVisualizePointLights;*/
 
     // update the camera
     mCamera->update(dt);
