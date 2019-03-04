@@ -61,7 +61,6 @@ BasicSceneRenderer::BasicSceneRenderer()
 
 void calculateDistance() {
 	//set the distance to the current distance between car and obstacle
-	//TODO: update for collision with more than one entity
 	d = sqrt(((p1x - p2x) * (p1x - p2x)) + ((p1y - p2y) * (p1y - p2y)) + ((p1z - p2z) * (p1z - p2z)));
 }
 
@@ -163,7 +162,7 @@ void BasicSceneRenderer::initialize()
 	mMeshes.push_back(flMesh);
 
 	//win/loss banner
-	Mesh* winLossMesh = CreateTexturedQuad(3.2, 2.4, roomDepth * roomTilesPerUnit, 3 * roomTilesPerUnit);
+	Mesh* winLossMesh = CreateTexturedQuad(3.4, 2.5, 1, 1);
 	mMeshes.push_back(winLossMesh);
 
     //
@@ -179,11 +178,15 @@ void BasicSceneRenderer::initialize()
     texNames.push_back("textures/Rock.tga");
     texNames.push_back("textures/white.tga");
     texNames.push_back("textures/yo.tga");
-    texNames.push_back("textures/YoureLoser.tga");
-	texNames.push_back("textures/YoureWinner.tga");
 
     for (unsigned i = 0; i < texNames.size(); i++)
         mTextures.push_back(new Texture(texNames[i], GL_REPEAT, GL_LINEAR));
+
+	texNames.push_back("textures/YoureLoser.tga");
+	texNames.push_back("textures/YoureWinner.tga");
+
+	mTextures.push_back(new Texture(texNames[8], GL_CLAMP_TO_EDGE, GL_LINEAR));
+	mTextures.push_back(new Texture(texNames[9], GL_CLAMP_TO_EDGE, GL_LINEAR));
 
     //
     // Create materials
@@ -233,7 +236,7 @@ void BasicSceneRenderer::initialize()
 	mEntities.push_back(new Entity(mMeshes[4], mMaterials[5], Transform(0.5f * roomWidth, -11, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	//finish line
-	mEntities.push_back(new Entity(flMesh, mMaterials[2], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+	mEntities.push_back(new Entity(flMesh, mMaterials[6], Transform(0, -5.5, -620, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 
 	// floor
 	mEntities.push_back(new Entity(cfMesh, mMaterials[1], Transform(0, -0.5f * roomHeight, -300, glm::angleAxis(glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)))));
@@ -549,7 +552,8 @@ bool BasicSceneRenderer::update(float dt)
 
 				// pop pickup to replace with loss condition mesh
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+				if (kb->isKeyDown(KC_UP) || kb->isKeyDown(KC_Z)) { mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 3, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f))))); }
+				else { mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f))))); }
 
 			}
 		}
@@ -573,7 +577,9 @@ bool BasicSceneRenderer::update(float dt)
 
 				// pop pickup to replace with loss condition mesh
 				mEntities.pop_back();
-				mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
+				if (kb->isKeyDown(KC_UP)|| kb->isKeyDown(KC_Z)) { mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 3, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f))))); }
+				else { mEntities.push_back(new Entity(mMeshes[7], mMaterials[8], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f))))); }
+				
 
 			}
 
@@ -599,8 +605,8 @@ bool BasicSceneRenderer::update(float dt)
 				mEntities.push_back(new Entity(mMeshes[7], mMaterials[9], Transform(0, -8, cameraPosition.z - 2.5, glm::angleAxis(glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f)))));
 			}
 			else {
-				playerVehicle->translateLocal(0, 0, -0.4);
-				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.4);
+				playerVehicle->translateLocal(0, 0, -0.5);
+				mCamera->setPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z - 0.5);
 			}
 
 		}

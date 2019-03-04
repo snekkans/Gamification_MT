@@ -55,7 +55,6 @@ void Camera::update(float deltaT)
 	//TODO: Built In camera controls start here
 
 	// the right mouse button needs to be pressed for freelook to work
-	//if (mouse->isButtonDown(MOUSE_BUTTON_RIGHT)) {
 	/*if (mouse->isButtonDown(MOUSE_BUTTON_LEFT)) {
 		int dx = mouse->getDeltaX();
 		int dy = mouse->getDeltaY();
@@ -136,6 +135,8 @@ void Camera::update(float deltaT)
         localMoveVec.y += 1;
     if (kb->isKeyDown(KC_C))
         localMoveVec.y -= 1;*/
+
+	//end camera movements
 
     float localMoveLen = glm::length(localMoveVec);
 
